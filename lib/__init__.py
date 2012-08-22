@@ -38,7 +38,7 @@ class plugin:
             log_exc(e)
 
     def escape(self, label):
-        if type(label) == list:
+        if type(label) in (list, tuple):
             return '.'.join([i.replace('.', '$').replace('/', '_') for i in label])
         else:
             return label.replace('.', '$').replace('/', '_')
