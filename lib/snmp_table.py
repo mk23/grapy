@@ -2,9 +2,8 @@ import grapy
 import netsnmp
 import re
 
-import pprint
 class snmp_table (grapy.plugin):
-    def gather(self):
+    def collect(self):
         oid = netsnmp.VarList(netsnmp.Varbind(self.conf['table']))
         netsnmp.snmpwalk(oid, DestHost=self.conf['hostname'], Version=self.conf['snmp_ver'], Community=self.conf['snmp_com'], UseNumeric=True)
 
@@ -28,14 +27,4 @@ class snmp_table (grapy.plugin):
                     continue
 
                 lbl = [val[i] if unicode(i).isnumeric() else i.format(index=idx, label=key) for i in obj['labels'].split('.')]
-                self.data['.'.join(lbl)] = val[obj['values']]
-
-#        pprint.pprint(oid)
-#        pprint.pprint(self.conf['objects'])
-
-#        if unicode(self.conf['labels']).isnumeric():
-#            for idx in xrange(len(oid)):
-#                key = oid[idx].tag.strip('.')[-1]
-#                self.data[self.conf['labels'].format(index=idx, token=key)] = oid[idx].val
-#
-#        print self.data
+                self.data[self.escape(lbl)] = val[obj['values']]
