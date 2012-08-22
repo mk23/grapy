@@ -1,6 +1,8 @@
 import datetime
 import logging as log
 import os
+import pickle
+import socket
 import sys
 import time
 import traceback
@@ -11,18 +13,50 @@ class plugin:
         self.data = {}
 
         data_file = '%s/%s.dat' % (conf['ts_dir'], conf['name'])
-        log.debug('loading time stamp from %s', data_file)
+        log.debug('loading timestamp from %s', data_file)
 
-        threshold = time.time() - int(conf['interval'])
         code_date = os.stat(sys.modules[self.__class__.__module__].__file__).st_mtime
+        threshold = time.time() - int(conf['interval']) * 60
         run_limit = max(code_date, threshold)
 
         log.debug('%s run limit: %s', conf['name'], datetime.datetime.fromtimestamp(run_limit))
         if not os.path.exists(data_file) or os.stat(data_file).st_mtime < run_limit:
-            self.gather()
-            print self.data
+            self.collect()
+            self.publish()
+            pickle.dump(self.data, open(data_file, 'w'))
         else:
             log.debug('%s: skipping run: recent change', data_file)
+
+    def publish(self):
+        t = int(time.time())
+        m = ['%s.%s.%s %s %d\r\n' % (self.conf['prefix'], self.conf['name'], k, v, t) for k, v in self.data.items()]
+
+        try:
+            s = mk_sock(*(self.conf['carbon'].split(':')))
+            s.send(''.join(m))
+        except Exception as e:
+            log_exc(e)
+
+    def escape(self, label):
+        if type(label) == list:
+            return '.'.join([i.replace('.', '$').replace('/', '_') for i in label])
+        else:
+            return label.replace('.', '$').replace('/', '_')
+
+
+def mk_sock(host, port='2004'):
+    port = int(port)
+    sock = socket.socket()
+    name = '%s:%d' % (host, port)
+
+    if not hasattr(mk_sock, 'sockets'):
+        mk_sock.sockets = {}
+
+    if name not in mk_sock.sockets:
+        sock.connect((host, port))
+        mk_sock.sockets[name] = sock
+
+    return mk_sock.sockets[name]
 
 def log_exc(e, msg=None):
     if msg:
