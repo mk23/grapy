@@ -1,6 +1,6 @@
 #!/usr/bin/env python2.7
 
-import datetime
+import datetime, sys
 from gevent.server import StreamServer
 
 def logger(msg, *args):
@@ -24,4 +24,9 @@ if __name__ == '__main__':
     logger('starting ingestion server on port 2004')
 
     server = StreamServer(('0.0.0.0', 2004), ingest)
-    server.serve_forever()
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print
+        logger('exiting')
+        sys.exit(0)
