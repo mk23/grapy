@@ -56,7 +56,7 @@ def parse_conf(args):
 
     return conf
 
-def build_conf(name, items=[]):
+def build_conf(name, items):
     conf = dict([('name', name), ('objects', {})] + GRAPY_GLOBAL.items())
     for item in items:
         key = item[0].split('.')
