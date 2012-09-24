@@ -89,8 +89,11 @@ def initialize(conf):
 
             log.debug('added plugin %s to module list', name)
 
-            mods[name] = getattr(sys.modules[full], base)(args)
-            log.debug('created plugin %s instance of %s (%s)', name, base, mods[name])
+            try:
+                mods[name] = getattr(sys.modules[full], base)(args)
+                log.debug('created plugin %s instance of %s (%s)', name, base, mods[name])
+            except Exception as e:
+                grapy.log_exc(e, '%s: failed to initialize plugin' % name)
 
     except Exception as e:
         grapy.log_exc(e, 'initialization failed')
