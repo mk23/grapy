@@ -41,6 +41,7 @@ class http_api(grapy.plugin):
             if part == '**':
                 for atom in data:
                     self.json_lookup(atom, label, parts, key, val)
+
                 for i in xrange(undo):
                     undo -= 1
                     key.pop()
@@ -54,11 +55,12 @@ class http_api(grapy.plugin):
 
                         if len(parts) > 0:
                             self.json_lookup(data[atom], label, parts, key, val)
-                            for i in xrange(undo):
-                                undo -= 1
-                                key.pop()
                         else:
                             val[label.format(name=self.escape(key) if key else atom)] = data[atom]
+
+                        for i in xrange(undo):
+                            undo -= 1
+                            key.pop()
         finally:
             for i in xrange(undo):
                 undo -= 1
