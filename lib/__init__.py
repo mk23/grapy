@@ -38,10 +38,12 @@ class plugin:
             log_exc(e)
 
     def escape(self, label):
+        quote = lambda t: t.replace('.', '$').replace('/', '^').replace(' ', '_')
+
         if type(label) == list:
-            return '.'.join([i.replace('.', '$').replace('/', '_') for i in label])
+            return '.'.join([quote(i) for i in label])
         else:
-            return label.replace('.', '$').replace('/', '_')
+            return quote(label)
 
 
 def mk_sock(host, port='2004'):
