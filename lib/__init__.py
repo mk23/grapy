@@ -46,19 +46,16 @@ class plugin:
             return quote(label)
 
 
-def mk_sock(host, port='2004'):
+def mk_sock(host, port='2004', cache={}):
     port = int(port)
     sock = socket.socket()
     name = '%s:%d' % (host, port)
 
-    if not hasattr(mk_sock, 'sockets'):
-        mk_sock.sockets = {}
-
-    if name not in mk_sock.sockets:
+    if name not in cache:
         sock.connect((host, port))
-        mk_sock.sockets[name] = sock
+        cache[name] = sock
 
-    return mk_sock.sockets[name]
+    return cache[name]
 
 def log_exc(e, msg=None):
     if msg:
