@@ -21,6 +21,11 @@ class plugin:
 
         log.debug('%s run limit: %s', conf['name'], datetime.datetime.fromtimestamp(run_limit))
         if not os.path.exists(data_file) or os.stat(data_file).st_mtime < run_limit:
+            try:
+                self.prev = pickle.load(open(data_file))
+            except:
+                self.prev = {}
+
             self.collect()
             self.publish()
             pickle.dump(self.data, open(data_file, 'w'))
@@ -28,8 +33,14 @@ class plugin:
             log.debug('%s: skipping run: recent change', data_file)
 
     def publish(self):
+        m = []
         t = int(time.time())
-        m = ['%s.%s.%s %s %d\r\n' % (self.conf['prefix'], self.conf['name'], k, v, t) for k, v in self.data.items()]
+
+        for k, v in self.data.items():
+            if self.conf.get('deltas'):
+                v = v - self.prev.get(k, 0)
+
+            m.append('%s.%s.%s %s %d\r\n' % (self.conf['prefix'], self.conf['name'], k, v, t))
 
         try:
             s = mk_sock(*(self.conf['carbon'].split(':')))
