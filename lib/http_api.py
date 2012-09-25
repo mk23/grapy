@@ -38,7 +38,6 @@ class http_api(grapy.plugin):
                 if '|' in indx:
                     indx, patt = indx.split('|')
                     find = re.match('^%s$' % urllib2.unquote(patt), data[urllib2.unquote(indx)])
-                    print data[indx], urllib2.unquote(patt), find
                     if find:
                         key.extend(find.groups())
                         undo += len(find.groups())
