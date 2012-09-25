@@ -35,8 +35,18 @@ class http_api(grapy.plugin):
             part, parts = parts[0], parts[1:]
             if ':' in part:
                 indx, part = part.split(':')
-                key.append(data[indx])
-                undo += 1
+                if '|' in indx:
+                    indx, patt = indx.split('|')
+                    find = re.match('^%s$' % urllib2.unquote(patt), data[urllib2.unquote(indx)])
+                    print data[indx], urllib2.unquote(patt), find
+                    if find:
+                        key.extend(find.groups())
+                        undo += len(find.groups())
+                    else:
+                        raise ValueError('%s: no match' % patt)
+                else:
+                    key.append(data[urllib2.unquote(indx)])
+                    undo += 1
 
             if part == '**':
                 for atom in data:
@@ -46,9 +56,8 @@ class http_api(grapy.plugin):
                     undo -= 1
                     key.pop()
             else:
-                part = urllib2.unquote(part)
                 for atom in data:
-                    find = re.match('^%s$' % part, atom)
+                    find = re.match('^%s$' % urllib2.unquote(part), atom)
                     if find:
                         key.extend(find.groups())
                         undo += len(find.groups())
