@@ -30,7 +30,7 @@ class http_api(grapy.plugin):
         if val is None:
             val = {}
 
-        undo = 0
+        undo_one = undo_two = 0
         try:
             part, parts = parts[0], parts[1:]
             if ':' in part:
@@ -40,37 +40,37 @@ class http_api(grapy.plugin):
                     find = re.match('^%s$' % urllib2.unquote(patt), data[urllib2.unquote(indx)])
                     if find:
                         key.extend(find.groups())
-                        undo += len(find.groups())
+                        undo_one += len(find.groups())
                     else:
                         raise ValueError('%s: no match' % patt)
                 else:
                     key.append(data[urllib2.unquote(indx)])
-                    undo += 1
+                    undo_one += 1
 
             if part == '**':
                 for atom in data:
                     self.json_lookup(atom, label, parts, key, val)
 
-                for i in xrange(undo):
-                    undo -= 1
+                for i in xrange(undo_one):
+                    undo_one -= 1
                     key.pop()
             else:
                 for atom in data:
                     find = re.match('^%s$' % urllib2.unquote(part), atom)
                     if find:
                         key.extend(find.groups())
-                        undo += len(find.groups())
+                        undo_two += len(find.groups())
 
                         if len(parts) > 0:
                             self.json_lookup(data[atom], label, parts, key, val)
                         else:
                             val[label.format(name=self.escape(key) if key else atom)] = data[atom]
 
-                        for i in xrange(undo):
-                            undo -= 1
+                        for i in xrange(undo_two):
+                            undo_two -= 1
                             key.pop()
         finally:
-            for i in xrange(undo):
+            for i in xrange(undo_one + undo_two):
                 undo -= 1
                 key.pop()
             return val
