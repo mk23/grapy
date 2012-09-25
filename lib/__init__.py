@@ -40,7 +40,7 @@ class plugin:
     def escape(self, label):
         quote = lambda t: t.replace('.', '$').replace('/', '^').replace(' ', '_')
 
-        if type(label) == list:
+        if type(label) in (list, tuple):
             return '.'.join([quote(i) for i in label])
         else:
             return quote(label)
