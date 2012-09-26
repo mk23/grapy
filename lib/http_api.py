@@ -17,7 +17,7 @@ class http_api(grapy.plugin):
 
     def json_parser(self, text):
         data = json.loads(text)
-        for item in self.conf['objects'].values():
+        for item in self.conf['items']:
             label = item.get('label', '{name}')
             parts = item['value'].lstrip('/').split('/')
             for key, val in self.json_lookup(data, label, parts).items():
