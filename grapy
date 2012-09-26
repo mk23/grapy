@@ -1,22 +1,12 @@
 #!/usr/bin/env python
 
-import ConfigParser
 import glob
 import logging
 import logging.handlers
 import socket
 import grapy
 import sys
-
-GRAPY_GLOBAL = {
-    'carbon':   'localhost:2004',
-    'prefix':   socket.gethostname().split('.')[0],
-    'logger':   None,
-    'ts_dir':   '/tmp',
-    'hostname': socket.gethostname(),
-    'snmp_com': 'public',
-    'snmp_ver': 2,
-}
+import yaml
 
 def create_log(logger=None, debug=False):
     log = logging.getLogger()
@@ -41,20 +31,24 @@ def create_log(logger=None, debug=False):
 
     return log
 
-def parse_conf(args):
-    conf = ConfigParser.SafeConfigParser()
-    conf.read(args.config)
+def parse_conf(config, parser):
+    try:
+        conf = yaml.load(open(config))
+    except (IOError, yaml.parser.ParserError, yaml.scanner.ScannerError) as e:
+        parser.error('cannot parse configuration file: %s' % e)
 
-    if conf.has_option('grapy_global', 'include_dir'):
-        conf.read([args.config] + glob.glob('%s/*.cfg' % conf.get('grapy_global', 'include_dir')))
+    parser.set_defaults(**(conf.get('grapy_global')))
+    args = parser.parse_args()
 
-    for key, val in GRAPY_GLOBAL.items():
-        GRAPY_GLOBAL[key] = getattr(args, key, conf.get('grapy_global', key) if conf.has_option('grapy_global', key) else val)
-
-    if conf.has_section('grapy_global'):
-        conf.remove_section('grapy_global')
+    if args.include_dir:
+        for item in glob.glob('%s/*.yml' % args.include_dir):
+            try:
+                conf = dict(conf.items() + yaml.load(open(item)).items())
+            except (IOError, yaml.parser.ParserError, yaml.scanner.ScannerError) as e:
+                parser.error('cannot parse configuration file: %s' % e)
 
     return conf
+
 
 def build_conf(name, items):
     conf = dict([('name', name), ('objects', {})] + GRAPY_GLOBAL.items())
@@ -106,31 +100,37 @@ def initialize(conf):
 if __name__ == '__main__':
     import argparse
 
-    parser = argparse.ArgumentParser(description='graphite publishing system', argument_default=argparse.SUPPRESS) 
-    parser.add_argument('-H', '--hostname',
-                        help='global default host address (default: %s)' % GRAPY_GLOBAL['hostname'])
-    parser.add_argument('-C', '--snmp-com',
-                        help='global default snmp community (default: %s)' % GRAPY_GLOBAL['snmp_com'])
-    parser.add_argument('-V', '--snmp-ver', type=int,
-                        help='global default snmp version (default: %s)' % GRAPY_GLOBAL['snmp_ver'])
-    parser.add_argument('-f', '--config', default='/etc/grapy.cfg',
-                        help='grapy configuration file (default: %(default)s)')
-    parser.add_argument('-t', '--ts-dir',
-                        help='location for timestamp files (default: %s)' % GRAPY_GLOBAL['ts_dir'])
-    parser.add_argument('-c', '--carbon',
-                        help='carbon hostname[:port] (default: %s)' % GRAPY_GLOBAL['carbon'])
-    parser.add_argument('-p', '--prefix',
-                        help='graphite key prefix (default: %s)' % GRAPY_GLOBAL['prefix'])
+    parser = argparse.ArgumentParser(description='graphite publishing system')
+    parser.add_argument('-H', '--hostname', default='localhost',
+                        help='global default host address')
+    parser.add_argument('-C', '--snmp-community', default='public',
+                        help='global default snmp community')
+    parser.add_argument('-V', '--snmp-version', default=2, type=int,
+                        help='global default snmp version')
+    parser.add_argument('-i', '--include-dir',
+                        help='location for extra configuration files')
+    parser.add_argument('-s', '--persist-dir', default='/var/lib/grapy',
+                        help='location for state files')
+    parser.add_argument('-c', '--carbon-host', default='localhost',
+                        help='destination carbon host')
+    parser.add_argument('-p', '--carbon-port', default=2004, type=int,
+                        help='destination carbon port')
+    parser.add_argument('-x', '--host-prefix', default=socket.gethostname().split('.')[0],
+                        help='graphite host key prefix')
+    parser.add_argument('-f', '--config', default='/etc/grapy.yml',
+                        help='grapy configuration file')
     parser.add_argument('-l', '--logger',
-                        help='file, console:, or syslog:<facility> (default: %s)' % GRAPY_GLOBAL['logger'])
+                        help='log to file, console:, or syslog:<facility>')
     parser.add_argument('-d', '--debug', default=False, action='store_true', help=argparse.SUPPRESS)
     args = parser.parse_args()
 
-    log = create_log(args.logger, args.debug)
-    try:
-        conf = parse_conf(args)
-        mods = initialize(conf)
-    except SystemExit as e:
-        log.info('grapy exiting: %s', e)
+    conf = parse_conf(args.config, parser)
 
+#    log = create_log(args.logger, args.debug)
+#    try:
+#        conf = parse_conf(args)
+#        mods = initialize(conf)
+#    except SystemExit as e:
+#        log.info('grapy exiting: %s', e)
+#
 # vim: ft=python sw=4 ts=4 sts=4 sta si et nu ruler cinwords=if,elif,else,for,while,try,except,finally,def,class
