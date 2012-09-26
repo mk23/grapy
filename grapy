@@ -10,7 +10,6 @@ import yaml
 
 def create_log(logger=None, debug=False):
     log = logging.getLogger()
-#    log.removeHandler(log.handlers[0]) # remove default stderr logger
 
     if logger or debug:
         if logger and logger.startswith('syslog:'):
@@ -31,6 +30,7 @@ def create_log(logger=None, debug=False):
 
     return log
 
+
 def parse_conf(config, parser):
     try:
         conf = yaml.load(open(config))
@@ -50,51 +50,33 @@ def parse_conf(config, parser):
     return conf
 
 
-def build_conf(name, items):
-    conf = dict([('name', name), ('objects', {})] + GRAPY_GLOBAL.items())
-    for item in items:
-        key = item[0].split('.')
-        if unicode(key[-1]).isnumeric():
-            idx = int(key[-1])
-            if conf['objects'].has_key(idx):
-                conf['objects'][idx][key[0]] = item[1]
-            else:
-                conf['objects'][idx] = {key[0]: item[1]}
-        else:
-            conf[item[0]] = item[1]
-
-    return conf
-
-def initialize(conf):
-    log.info('initialization started')
+def run_plugins(conf):
+    log.info('collection started')
 
     try:
-        log.info('configuring %d metric(s): %s', len(conf.sections()), ', '.join(conf.sections()))
+        glbl = conf.pop('grapy_global')
 
-        mods = {}
-        for name in conf.sections():
-            args = build_conf(name, conf.items(name))
-            base = conf.get(name, 'module')
+        log.info('configuring %d metric(s): %s', len(conf), ', '.join(conf.keys()))
+        for name, item in conf.items():
+            base = item['module']
             full = 'grapy.%s' % base
 
             if full not in sys.modules:
                 __import__(full)
                 log.debug('importing module %s', full)
 
-            log.debug('added plugin %s to module list', name)
-
             try:
-                mods[name] = getattr(sys.modules[full], base)(args)
-                log.debug('created plugin %s instance of %s (%s)', name, base, mods[name])
+                args = dict(item.items() + glbl.items())
+                getattr(sys.modules[full], base)(args)
+                log.debug('ran plugin %s instance of %s', name, base)
             except Exception as e:
-                grapy.log_exc(e, '%s: failed to initialize plugin' % name)
+                grapy.log_exc(e, '%s: failed to run plugin' % name)
 
     except Exception as e:
-        grapy.log_exc(e, 'initialization failed')
+        grapy.log_exc(e, 'collection failed')
         sys.exit(1)
 
-    log.info('initialization complete')
-    return mods
+    log.info('collection complete')
 
 
 if __name__ == '__main__':
@@ -124,13 +106,12 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--debug', default=False, action='store_true', help=argparse.SUPPRESS)
     args = parser.parse_args()
 
-    conf = parse_conf(args.config, parser)
+    cfg = parse_conf(args.config, parser)
+    log = create_log(args.logger, args.debug)
 
-#    log = create_log(args.logger, args.debug)
-#    try:
-#        conf = parse_conf(args)
-#        mods = initialize(conf)
-#    except SystemExit as e:
-#        log.info('grapy exiting: %s', e)
-#
+    try:
+        mods = run_plugins(cfg)
+    except SystemExit as e:
+        log.info('grapy exiting: %s', e)
+
 # vim: ft=python sw=4 ts=4 sts=4 sta si et nu ruler cinwords=if,elif,else,for,while,try,except,finally,def,class
