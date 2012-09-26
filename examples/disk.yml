@@ -1,35 +1,39 @@
-[disk.iops]
-interval = 5
-module   = snmp_table
+disk.iops:
+    period: 5
+    module: snmp_table
 
-table = .1.3.6.1.4.1.2021.13.15.1.1
+    table: .1.3.6.1.4.1.2021.13.15.1.1
 
-labels.1 = 2.read.ops
-values.1 = 5
-filter.1 = 2:^(?!ram\d+|loop\d+)
+    items:
+        -
+            labels: "2.read.ops"
+            values: "5"
+            filter: "2:^(?!ram\\d+|loop\\d+)"
+        -
+            labels: "2.read.bytes"
+            values: "12"
+            filter: "2:^(?!ram\\d+|loop\\d+)"
+        -
+            labels: "2.write.ops"
+            values: "6"
+            filter: "2:^(?!ram\\d+|loop\\d+)"
+        -
+            labels: "2.write.bytes"
+            values: "13"
+            filter: "2:^(?!ram\\d+|loop\\d+)"
 
-labels.2 = 2.read.bytes
-values.2 = 12
-filter.2 = 2:^(?!ram\d+|loop\d+)
+disk.space:
+    period: 5
+    module: snmp_table
 
-labels.3 = 2.write.ops
-values.3 = 6
-filter.3 = 2:^(?!ram\d+|loop\d+)
+    table: .1.3.6.1.4.1.2021.9.1
 
-labels.4 = 2.write.bytes
-values.4 = 13
-filter.4 = 2:^(?!ram\d+|loop\d+)
-
-[disk.space]
-interval = 5
-module   = snmp_table
-
-table = .1.3.6.1.4.1.2021.9.1
-
-labels.1 = 2.size
-values.1 = 6
-filter.1 = 3:^(?!none|udev|devpts|tmpfs|sysfs|proc|cgroup)
-
-labels.2 = 2.used
-values.2 = 8
-filter.2 = 3:^(?!none|udev|devpts|tmpfs|sysfs|proc|cgroup)
+    items:
+        -
+            labels: "2.size"
+            values: "6"
+            filter: "3:^(?!none|udev|devpts|tmpfs|sysfs|proc|cgroup)"
+        -
+            labels: "2.used"
+            values: "8"
+            filter: "3:^(?!none|udev|devpts|tmpfs|sysfs|proc|cgroup)"

@@ -1,21 +1,23 @@
-[mem]
-interval = 5
-module   = snmp_value
+mem:
+    period: 5
+    module: snmp_value
 
-label.1  = swap_total
-value.1  = .1.3.6.1.4.1.2021.4.3.0
-
-label.2  = swap_free
-value.2  = .1.3.6.1.4.1.2021.4.4.0
-
-label.3  = real_total
-value.3  = .1.3.6.1.4.1.2021.4.5.0
-
-label.4  = real_free
-value.4  = .1.3.6.1.4.1.2021.4.6.0
-
-label.5  = buffer
-value.5  = .1.3.6.1.4.1.2021.4.14.0
-
-label.6  = cached
-value.6  = .1.3.6.1.4.1.2021.4.15.0
+    items:
+        -
+            label: "swap_total"
+            value: ".1.3.6.1.4.1.2021.4.3.0"
+        -
+            label: "swap_free"
+            value: ".1.3.6.1.4.1.2021.4.4.0"
+        -
+            label: "real_total"
+            value: ".1.3.6.1.4.1.2021.4.5.0"
+        -
+            label: "real_free"
+            value: ".1.3.6.1.4.1.2021.4.6.0"
+        -
+            label: "buffer"
+            value: ".1.3.6.1.4.1.2021.4.14.0"
+        -
+            label: "cached"
+            value: ".1.3.6.1.4.1.2021.4.15.0"

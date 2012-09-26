@@ -1,59 +1,68 @@
-[rabbitmq.node]
-interval  = 5
-module    = http_api
-parser    = json
+rabbitmq.node:
+    period: 5
+    module: http_api
+    parser: json
 
-scheme    = http
-port      = 55672
-path      = /api/nodes
+    scheme:    http
+    port:      55672
+    path:      /api/nodes
 
-auth_type = basic
-auth_user = guest
-auth_pass = guest
+    auth_type: basic
+    auth_user: guest
+    auth_pass: guest
 
-value.1   = /**/mem_used
-value.2   = /**/proc_used
-value.3   = /**/sockets_used
+    items:
+        - value: "/**/mem_used"
+        - value: "/**/proc_used"
+        - value: "/**/sockets_used"
 
-[rabbitmq.exchanges]
-interval  = 5
-module    = http_api
-parser    = json
+rabbitmq.exchanges:
+    period: 5
+    module: http_api
+    parser: json
 
-scheme    = http
-port      = 55672
-path      = /api/exchanges/%%2f
+    scheme:    http
+    port:      55672
+    path:      /api/exchanges/%2f
 
-auth_type = basic
-auth_user = guest
-auth_pass = guest
+    auth_type: basic
+    auth_user: guest
+    auth_pass: guest
 
-label.1   = {name}.messages_in
-value.1   = /**/name:message_stats_in/publish
+    items:
+        -
+            label: "{name}.messages_in"
+            value: "/**/name:message_stats_in/publish"
+        -
+            label: "{name}.messages_out"
+            value: "/**/name:message_stats_out/publish"
 
-label.2   = {name}.messages_out
-value.2   = /**/name:message_stats_out/publish
+rabbitmq.queues:
+    period: 5
+    module: http_api
+    parser: json
 
-[rabbitmq.queues]
-interval  = 5
-module    = http_api
-parser    = json
+    scheme:    http
+    port:      55672
+    path:      /api/queues
 
-scheme    = http
-port      = 55672
-path      = /api/queues
+    auth_type: basic
+    auth_user: guest
+    auth_pass: guest
 
-auth_type = basic
-auth_user = guest
-auth_pass = guest
-
-value.1    = /**/name:(memory)
-
-label.2    = {name}.messages_total
-value.2    = /**/name:messages
-
-value.3    = /**/name:(messages_ready)
-value.4    = /**/name:(messages_unack)nowledged
-value.5    = /**/name:message_stats/(publish)
-value.6    = /**/name:message_stats/(deliver_get)
-value.7    = /**/name:message_stats/(deliver_no_ack)
+    items:
+        -
+            value: "/**/name:(memory)"
+        -
+            label: "{name}.messages_total"
+            value: "/**/name:messages"
+        -
+            value: "/**/name:(messages_ready)"
+        -
+            value: "/**/name:(messages_unack)nowledged"
+        -
+            value: "/**/name:message_stats/(publish)"
+        -
+            value: "/**/name:message_stats/(deliver_get)"
+        -
+            value: "/**/name:message_stats/(deliver_no_ack)"

@@ -1,14 +1,15 @@
-[java]
-interval = 0
-module   = http_api
-parser   = json
+java:
+    period: 5
+    module: http_api
+    parser: json
 
-scheme   = http
-port     = 8080
-path     = /jmxproxy/localhost:1123
+    scheme: http
+    port:   8080
+    path:   /jmxproxy/localhost:1123
 
-value.1  = /java.lang/java.lang%%3Atype=(ClassLoading)/((?%%3AUn)?[Ll]oadedClassCount)
-value.2  = /java.lang/java.lang%%3Atype=(Threading)/((?%%3ADaemon)?ThreadCount)
-value.3  = /java.lang/java.lang%%3Atype=(Memory)/(.*)Usage/(used|max)
-value.4  = /java.lang/java.lang%%3Atype=(MemoryPool),name=(.*)/Usage/(used|max)
-value.5  = /java.lang/java.lang%%3Atype=(GarbageCollector),name=(.*)/(CollectionCount)
+    items:
+        - value: "/java.lang/java.lang%%3Atype=(ClassLoading)/((?%%3AUn)?[Ll]oadedClassCount)"
+        - value: "/java.lang/java.lang%%3Atype=(Threading)/((?%%3ADaemon)?ThreadCount)"
+        - value: "/java.lang/java.lang%%3Atype=(Memory)/(.*)Usage/(used|max)"
+        - value: "/java.lang/java.lang%%3Atype=(MemoryPool),name=(.*)/Usage/(used|max)"
+        - value: "/java.lang/java.lang%%3Atype=(GarbageCollector),name=(.*)/(CollectionCount)"
