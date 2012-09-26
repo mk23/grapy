@@ -1,0 +1,8 @@
+grapy_global:
+    default_host: localhost
+    include_path: conf.d
+    persist_path: /tmp
+
+    key_prefix:   cluster01.myhost
+    carbon_host:  localhost
+    carbon_port:  2004
