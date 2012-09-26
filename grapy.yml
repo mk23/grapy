@@ -1,8 +1,14 @@
 grapy_global:
-    default_host: localhost
-    include_path: conf.d
-    persist_path: /tmp
+    hostname: localhost
 
-    key_prefix:   cluster01.myhost
-    carbon_host:  localhost
-    carbon_port:  2004
+    snmp_version: 2
+    snmp_community: public
+
+    include_dir: conf.d
+    persist_dir: /tmp
+
+    host_prefix: cluster01.myhost
+    carbon_host: localhost
+    carbon_port: 2004
+
+    logger: console:
