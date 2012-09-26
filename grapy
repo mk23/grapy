@@ -58,6 +58,7 @@ def run_plugins(conf):
 
         log.info('configuring %d metric(s): %s', len(conf), ', '.join(conf.keys()))
         for name, item in conf.items():
+            args = {'name': name}
             base = item['module']
             full = 'grapy.%s' % base
 
@@ -66,7 +67,7 @@ def run_plugins(conf):
                 log.debug('importing module %s', full)
 
             try:
-                args = dict(item.items() + glbl.items())
+                args.update(glbl.items() + item.items())
                 getattr(sys.modules[full], base)(args)
                 log.debug('ran plugin %s instance of %s', name, base)
             except Exception as e:
