@@ -31,17 +31,20 @@ def create_log(logger=None, debug=False):
     return log
 
 
-def parse_conf(config, parser):
+def parse_conf(parser):
     try:
-        conf = yaml.load(open(config))
+        args = parser.parse_args()
+        conf = yaml.load(open(args.config))
+
+        parser.set_defaults(**(conf['grapy_global']))
+
+        args = parser.parse_args()
+        conf['grapy_global'].update(vars(args))
     except (IOError, yaml.parser.ParserError, yaml.scanner.ScannerError) as e:
         parser.error('cannot parse configuration file: %s' % e)
 
-    parser.set_defaults(**(conf.get('grapy_global')))
-    args = parser.parse_args()
-
-    if args.include_dir:
-        for item in glob.glob('%s/*.yml' % args.include_dir):
+    if conf['grapy_global']['include_dir']:
+        for item in glob.glob('%s/*.yml' % conf['grapy_global']['include_dir']):
             try:
                 conf = dict(conf.items() + yaml.load(open(item)).items())
             except (IOError, yaml.parser.ParserError, yaml.scanner.ScannerError) as e:
@@ -105,13 +108,11 @@ if __name__ == '__main__':
     parser.add_argument('-l', '--logger',
                         help='log to file, console:, or syslog:<facility>')
     parser.add_argument('-d', '--debug', default=False, action='store_true', help=argparse.SUPPRESS)
-    args = parser.parse_args()
 
-    cfg = parse_conf(args.config, parser)
-    log = create_log(args.logger, args.debug)
-
+    cfg = parse_conf(parser)
+    log = create_log(cfg['grapy_global']['logger'], cfg['grapy_global']['debug'])
     try:
-        mods = run_plugins(cfg)
+        run_plugins(cfg)
     except SystemExit as e:
         log.info('grapy exiting: %s', e)
 
