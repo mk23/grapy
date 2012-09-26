@@ -12,14 +12,14 @@ class plugin:
         self.conf = conf
         self.data = {}
 
-        data_file = '%s/%s.dat' % (conf['ts_dir'], conf['name'])
+        data_file = '%s/%s.dat' % (conf['persist_dir'], conf['plugin_name'])
         log.debug('loading timestamp from %s', data_file)
 
         code_date = os.stat(sys.modules[self.__class__.__module__].__file__).st_mtime
-        threshold = time.time() - int(conf['interval']) * 60
+        threshold = time.time() - int(conf['period']) * 60
         run_limit = max(code_date, threshold)
 
-        log.debug('%s run limit: %s', conf['name'], datetime.datetime.fromtimestamp(run_limit))
+        log.debug('%s run limit: %s', conf['plugin_name'], datetime.datetime.fromtimestamp(run_limit))
         if not os.path.exists(data_file) or os.stat(data_file).st_mtime < run_limit:
             try:
                 self.prev = pickle.load(open(data_file))
@@ -37,16 +37,12 @@ class plugin:
         t = int(time.time())
 
         for k, v in self.data.items():
-            if self.conf.get('deltas'):
+            if self.conf.get('only_deltas'):
                 v = v - self.prev.get(k, 0)
+            m.append('%s.%s.%s %s %d\r\n' % (self.conf['host_prefix'], self.conf['plugin_name'], k, v, t))
 
-            m.append('%s.%s.%s %s %d\r\n' % (self.conf['prefix'], self.conf['name'], k, v, t))
-
-        try:
-            s = mk_sock(*(self.conf['carbon'].split(':')))
-            s.send(''.join(m))
-        except Exception as e:
-            log_exc(e)
+        s = mk_sock(self.conf['carbon_host'], self.conf['carbon_port'])
+        s.send(''.join(m))
 
     def escape(self, label):
         quote = lambda t: t.replace('.', '$').replace('/', '^').replace(' ', '_')
@@ -57,8 +53,7 @@ class plugin:
             return quote(label)
 
 
-def mk_sock(host, port='2004', cache={}):
-    port = int(port)
+def mk_sock(host, port=2004, cache={}):
     sock = socket.socket()
     name = '%s:%d' % (host, port)
 
