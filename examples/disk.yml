@@ -8,19 +8,23 @@ disk.iops:
         -
             labels: "2.read.ops"
             values: "5"
-            filter: "2:^(?!ram\\d+|loop\\d+)"
+            filter:
+                - "2:^(?!ram\\d+|loop\\d+)"
         -
             labels: "2.read.bytes"
             values: "12"
-            filter: "2:^(?!ram\\d+|loop\\d+)"
+            filter:
+                - "2:^(?!ram\\d+|loop\\d+)"
         -
             labels: "2.write.ops"
             values: "6"
-            filter: "2:^(?!ram\\d+|loop\\d+)"
+            filter:
+                - "2:^(?!ram\\d+|loop\\d+)"
         -
             labels: "2.write.bytes"
             values: "13"
-            filter: "2:^(?!ram\\d+|loop\\d+)"
+            filter:
+                - "2:^(?!ram\\d+|loop\\d+)"
 
 disk.space:
     period: 5
@@ -32,8 +36,10 @@ disk.space:
         -
             labels: "2.size"
             values: "6"
-            filter: "3:^(?!none|udev|devpts|tmpfs|sysfs|proc|cgroup)"
+            filter:
+                - "3:^(?!none|udev|devpts|tmpfs|sysfs|proc|cgroup)"
         -
             labels: "2.used"
             values: "8"
-            filter: "3:^(?!none|udev|devpts|tmpfs|sysfs|proc|cgroup)"
+            filter:
+                - "3:^(?!none|udev|devpts|tmpfs|sysfs|proc|cgroup)"
