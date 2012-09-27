@@ -48,7 +48,7 @@ class plugin:
         quote = lambda t: t.replace('.', '$').replace('/', '^').replace(' ', '_')
 
         if type(label) in (list, tuple):
-            return '.'.join([quote(i) for i in label])
+            return '.'.join([quote(i) for i in label if i])
         else:
             return quote(label)
 
