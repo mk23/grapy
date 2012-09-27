@@ -3,8 +3,6 @@ hadoop.namenode:
     module: http_api
     parser: json
 
-    hostname: hdpb
-
     scheme: http
     port:   50070
     path:   /jmx
@@ -21,8 +19,8 @@ hadoop.namenode:
         -
             value: "/beans/**/name|java.lang%3Atype=(Threading):((?%3ADaemon)?ThreadCount)"
         -
-            label: "FileSystem.{name}"
+            label: "hdfs.{name}"
             value: "/beans/**/name|hadoop%3Aservice=NameNode,name=FSNamesystemState:(Capacity.*)"
         -
-            label: "FileSystem.{name}"
+            label: "hdfs.{name}"
             value: "/beans/**/name|hadoop%3Aservice=NameNode,name=RpcActivityForPort\\d+:(.*Bytes|NumOpenConnections)"
