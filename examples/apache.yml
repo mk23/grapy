@@ -1,0 +1,21 @@
+apache:
+    period: 0
+    module: http_api
+    parser: regex
+
+    scheme: http
+    port:   80
+    path:   /server-status?auto
+
+    items:
+        - label: "kbytes"
+          regex: "Total kBytes: (\\d+)"
+
+        - label: "requests"
+          regex: "Total Accesses: (\\d+)"
+
+        - label: "workers.busy"
+          regex: "BusyWorkers: (\\d+)"
+
+        - label: "workers.idle"
+          regex: "IdleWorkers: (\\d+)"
