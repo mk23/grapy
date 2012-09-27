@@ -71,6 +71,6 @@ class http_api(grapy.plugin):
                             key.pop()
         finally:
             for i in xrange(undo_one + undo_two):
-                undo -= 1
                 key.pop()
-            return val
+
+        return val
