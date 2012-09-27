@@ -1,5 +1,5 @@
 memcached:
-    period: 0
+    period: 5
     module: memcached_stats
 
     port: 11211
