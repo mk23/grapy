@@ -14,6 +14,16 @@ class http_api(grapy.plugin):
 
         getattr(self, '%s_parser' % self.conf['parser'])(urllib2.urlopen(api_url).read())
 
+    def regex_parser(self, text):
+        for item in self.conf['items']:
+            find = re.search(item['regex'], text)
+            if find and len(find.groups()):
+                key = item.get('value', '').split('.') + [find.groupdict().get('label')]
+                val = find.groupdict().get('value', find.group(0))
+
+                self.data[self.escape(key)] = val
+
+
 
     def json_parser(self, text):
         data = json.loads(text)
