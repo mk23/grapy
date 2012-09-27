@@ -1,5 +1,5 @@
 apache:
-    period: 0
+    period: 5
     module: http_api
     parser: regex
 

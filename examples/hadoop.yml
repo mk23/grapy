@@ -8,19 +8,18 @@ hadoop.namenode:
     path:   /jmx
 
     items:
-        -
-            value: "/beans/**/name|java.lang%3Atype=(Memory):(.*MemoryUsage)/(used|max)"
-        -
-            value: "/beans/**/name|java.lang%3Atype=(MemoryPool),name=(.*):Usage/(used|max)"
-        -
-            value: "/beans/**/name|java.lang%3Atype=(GarbageCollector),name=(.*):(CollectionCount)"
-        -
-            value: "/beans/**/name|java.lang%3Atype=(ClassLoading):((?%3AUn)?[Ll]oadedClassCount)"
-        -
-            value: "/beans/**/name|java.lang%3Atype=(Threading):((?%3ADaemon)?ThreadCount)"
-        -
-            label: "hdfs.{name}"
-            value: "/beans/**/name|hadoop%3Aservice=NameNode,name=FSNamesystemState:(Capacity.*)"
-        -
-            label: "hdfs.{name}"
-            value: "/beans/**/name|hadoop%3Aservice=NameNode,name=RpcActivityForPort\\d+:(.*Bytes|NumOpenConnections)"
+        - value: "/beans/**/name|java.lang%3Atype=(Memory):(.*MemoryUsage)/(used|max)"
+
+        - value: "/beans/**/name|java.lang%3Atype=(MemoryPool),name=(.*):Usage/(used|max)"
+
+        - value: "/beans/**/name|java.lang%3Atype=(GarbageCollector),name=(.*):(CollectionCount)"
+
+        - value: "/beans/**/name|java.lang%3Atype=(ClassLoading):((?%3AUn)?[Ll]oadedClassCount)"
+
+        - value: "/beans/**/name|java.lang%3Atype=(Threading):((?%3ADaemon)?ThreadCount)"
+
+        - label: "hdfs.{name}"
+          value: "/beans/**/name|hadoop%3Aservice=NameNode,name=FSNamesystemState:(Capacity.*)"
+
+        - label: "hdfs.{name}"
+          value: "/beans/**/name|hadoop%3Aservice=NameNode,name=RpcActivityForPort\\d+:(.*Bytes|NumOpenConnections)"

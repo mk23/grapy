@@ -3,21 +3,20 @@ mem:
     module: snmp_value
 
     items:
-        -
-            label: "swap_total"
-            value: ".1.3.6.1.4.1.2021.4.3.0"
-        -
-            label: "swap_free"
-            value: ".1.3.6.1.4.1.2021.4.4.0"
-        -
-            label: "real_total"
-            value: ".1.3.6.1.4.1.2021.4.5.0"
-        -
-            label: "real_free"
-            value: ".1.3.6.1.4.1.2021.4.6.0"
-        -
-            label: "buffer"
-            value: ".1.3.6.1.4.1.2021.4.14.0"
-        -
-            label: "cached"
-            value: ".1.3.6.1.4.1.2021.4.15.0"
+        - label: "swap_total"
+          value: ".1.3.6.1.4.1.2021.4.3.0"
+
+        - label: "swap_free"
+          value: ".1.3.6.1.4.1.2021.4.4.0"
+
+        - label: "real_total"
+          value: ".1.3.6.1.4.1.2021.4.5.0"
+
+        - label: "real_free"
+          value: ".1.3.6.1.4.1.2021.4.6.0"
+
+        - label: "buffer"
+          value: ".1.3.6.1.4.1.2021.4.14.0"
+
+        - label: "cached"
+          value: ".1.3.6.1.4.1.2021.4.15.0"

@@ -3,36 +3,35 @@ inet.tcp:
     module: snmp_value
 
     items:
-        -
-            label: "active_opens"
-            value: ".1.3.6.1.2.1.6.5.0"
-        -
-            label: "passive_opens"
-            value: ".1.3.6.1.2.1.6.6.0"
-        -
-            label: "attempt_fails"
-            value: ".1.3.6.1.2.1.6.7.0"
-        -
-            label: "establish_resets"
-            value: ".1.3.6.1.2.1.6.8.0"
-        -
-            label: "established"
-            value: ".1.3.6.1.2.1.6.9.0"
-        -
-            label: "retransmitted"
-            value: ".1.3.6.1.2.1.6.12.0"
-        -
-            label: "in_segments"
-            value: ".1.3.6.1.2.1.6.10.0"
-        -
-            label: "in_errors"
-            value: ".1.3.6.1.2.1.6.14.0"
-        -
-            label: "out_segments"
-            value: ".1.3.6.1.2.1.6.11.0"
-        -
-            label: "out_resets"
-            value: ".1.3.6.1.2.1.6.15.0"
+        - label: "active_opens"
+          value: ".1.3.6.1.2.1.6.5.0"
+
+        - label: "passive_opens"
+          value: ".1.3.6.1.2.1.6.6.0"
+
+        - label: "attempt_fails"
+          value: ".1.3.6.1.2.1.6.7.0"
+
+        - label: "establish_resets"
+          value: ".1.3.6.1.2.1.6.8.0"
+
+        - label: "established"
+          value: ".1.3.6.1.2.1.6.9.0"
+
+        - label: "retransmitted"
+          value: ".1.3.6.1.2.1.6.12.0"
+
+        - label: "in_segments"
+          value: ".1.3.6.1.2.1.6.10.0"
+
+        - label: "in_errors"
+          value: ".1.3.6.1.2.1.6.14.0"
+
+        - label: "out_segments"
+          value: ".1.3.6.1.2.1.6.11.0"
+
+        - label: "out_resets"
+          value: ".1.3.6.1.2.1.6.15.0"
 
 
 inet.udp:
@@ -40,15 +39,14 @@ inet.udp:
     module: snmp_value
 
     items:
-        -
-            label: "in_datagrams"
-            value: ".1.3.6.1.2.1.7.1.0"
-        -
-            label: "out_datagrams"
-            value: ".1.3.6.1.2.1.7.4.0"
-        -
-            label: "in_errors"
-            value: ".1.3.6.1.2.1.7.3.0"
-        -
-            label: "no_ports"
-            value: ".1.3.6.1.2.1.7.2.0"
+        - label: "in_datagrams"
+          value: ".1.3.6.1.2.1.7.1.0"
+
+        - label: "out_datagrams"
+          value: ".1.3.6.1.2.1.7.4.0"
+
+        - label: "in_errors"
+          value: ".1.3.6.1.2.1.7.3.0"
+
+        - label: "no_ports"
+          value: ".1.3.6.1.2.1.7.2.0"

@@ -2,66 +2,65 @@ net:
     period: 5
     module: snmp_table
 
-    table: .1.3.6.1.2.1.2.2.1
+    table:  .1.3.6.1.2.1.2.2.1
 
     items:
-        -
-            labels: "2.in.bytes"
-            values: "10"
-            filter:
-                - "7:1"
-                - "2:^eth\\d+"
-        -
-            labels: "2.in.unicast"
-            values: "11"
-            filter:
-                - "7:1"
-                - "2:^eth\\d+"
-        -
-            labels: "2.in.non_unicast"
-            values: "12"
-            filter:
-                - "7:1"
-                - "2:^eth\\d+"
-        -
-            labels: "2.in.discards"
-            values: "13"
-            filter:
-                - "7:1"
-                - "2:^eth\\d+"
-        -
-            labels: "2.in.errors"
-            values: "13"
-            filter:
-                - "7:1"
-                - "2:^eth\\d+"
-        -
-            labels: "2.out.bytes"
-            values: "16"
-            filter:
-                - "7:1"
-                - "2:^eth\\d+"
-        -
-            labels: "2.out.unicast"
-            values: "17"
-            filter:
-                - "7:1"
-                - "2:^eth\\d+"
-        -
-            labels: "2.out.non_unicast"
-            values: "18"
-            filter:
-                - "7:1"
-                - "2:^eth\\d+"
-        -
-            labels: "2.out.discards"
-            values: "19"
-            filter:
-                - "7:1"
-                - "2:^eth\\d+"
-        -
-            labels: "2.out.errors"
-            values: "20"
-            filter:
-                - "7:1"
-                - "2:^eth\\d+"
+        - labels: "2.in.bytes"
+          values: "10"
+          filter:
+            - "7:1"
+            - "2:^eth\\d+"
+
+        - labels: "2.in.unicast"
+          values: "11"
+          filter:
+            - "7:1"
+            - "2:^eth\\d+"
+
+        - labels: "2.in.non_unicast"
+          values: "12"
+          filter:
+            - "7:1"
+            - "2:^eth\\d+"
+
+        - labels: "2.in.discards"
+          values: "13"
+          filter:
+            - "7:1"
+            - "2:^eth\\d+"
+
+        - labels: "2.in.errors"
+          values: "13"
+          filter:
+            - "7:1"
+            - "2:^eth\\d+"
+
+        - labels: "2.out.bytes"
+          values: "16"
+          filter:
+            - "7:1"
+            - "2:^eth\\d+"
+
+        - labels: "2.out.unicast"
+          values: "17"
+          filter:
+            - "7:1"
+            - "2:^eth\\d+"
+
+        - labels: "2.out.non_unicast"
+          values: "18"
+          filter:
+            - "7:1"
+            - "2:^eth\\d+"
+
+        - labels: "2.out.discards"
+          values: "19"
+          filter:
+            - "7:1"
+            - "2:^eth\\d+"
+
+        - labels: "2.out.errors"
+          values: "20"
+          filter:
+            - "7:1"
+            - "2:^eth\\d+"

@@ -3,9 +3,8 @@ sys:
     module: snmp_value
 
     items:
-        -
-            label: "interrupts"
-            value: ".1.3.6.1.4.1.2021.11.59.0"
-        -
-            label: "contexts"
-            value: ".1.3.6.1.4.1.2021.11.60.0"
+        - label: "interrupts"
+          value: ".1.3.6.1.4.1.2021.11.59.0"
+
+        - label: "contexts"
+          value: ".1.3.6.1.4.1.2021.11.60.0"
