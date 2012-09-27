@@ -46,13 +46,13 @@ class http_api(grapy.plugin):
             if ':' in part:
                 indx, part = part.split(':')
                 if '|' in indx:
-                    indx, patt = indx.split('|')
-                    find = re.match('^%s$' % urllib2.unquote(patt), data[urllib2.unquote(indx)])
+                    indx, patt = (urllib2.unquote(s) for s in indx.split('|'))
+                    find = re.match('^%s$' % patt, data[indx])
                     if find:
                         key.extend(find.groups())
                         undo_one += len(find.groups())
                     else:
-                        raise ValueError('%s: no match' % patt)
+                        raise ValueError('^%s$: no match in: %s' % (patt, data[indx]))
                 else:
                     key.append(data[urllib2.unquote(indx)])
                     undo_one += 1
