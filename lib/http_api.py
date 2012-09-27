@@ -18,7 +18,7 @@ class http_api(grapy.plugin):
         for item in self.conf['items']:
             find = re.search(item['regex'], text)
             if find and len(find.groups()):
-                key = item.get('value', '').split('.') + [find.groupdict().get('label')]
+                key = item.get('label', '').split('.') + [find.groupdict().get('label')]
                 val = find.groupdict().get('value', find.group(0))
 
                 self.data[self.escape(key)] = val
