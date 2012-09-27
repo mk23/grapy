@@ -1,9 +1,9 @@
 import grapy
 import socket
 
-class memcache_stats(grapy.plugin):
+class memcached_stats(grapy.plugin):
     def collect(self):
-        excl = [
+        skip = [
             'pid',
             'uptime',
             'time',
@@ -12,10 +12,10 @@ class memcache_stats(grapy.plugin):
             'pointer_size',
             'rusage_user',
             'rusage_system'
-        ] + self.conf['exclude_stats']
+        ] + self.conf['skip']
 
         sock = socket.socket()
-        sock.connect((self.conf['hostname'], self.conf.get('memcached_port', 11211)))
+        sock.connect((self.conf['hostname'], self.conf.get('port', 11211)))
 
         sock.send('stats\r\n')
 
@@ -31,5 +31,5 @@ class memcache_stats(grapy.plugin):
         for line in buff.split('\r\n'):
             if line.startswith('STAT'):
                 key, val = line.strip().split()[1:]
-                if key not in excl:
+                if key not in skip:
                     self.data[key] = val

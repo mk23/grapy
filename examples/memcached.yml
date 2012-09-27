@@ -1,7 +1,8 @@
-memcache_stats:
+memcached:
     period: 0
-    module: memcache_stats
+    module: memcached_stats
 
-    exclude_stats:
+    port: 11211
+    skip:
         - connection_structures
         - reserved_fds
