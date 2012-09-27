@@ -1,0 +1,7 @@
+memcache_stats:
+    period: 0
+    module: memcache_stats
+
+    exclude_stats:
+        - connection_structures
+        - reserved_fds
