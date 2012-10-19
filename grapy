@@ -61,12 +61,13 @@ def run_plugins(conf):
 
         log.info('configuring %d metric(s): %s', len(conf), ', '.join(conf.keys()))
         for name, item in conf.items():
+            log.debug('configuring plugin: %s', name)
             base = item['poller']
             full = 'grapy.poller.%s' % base
 
             if full not in sys.modules:
-                __import__(full)
                 log.debug('importing module %s', full)
+                __import__(full)
 
             try:
                 args = {'plugin_name': name}
