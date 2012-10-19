@@ -58,22 +58,24 @@ def run_plugins(conf):
 
     try:
         glbl = conf.pop('grapy_global')
+        log.info('configured %d metric(s): %s', len(conf), ', '.join(conf.keys()))
 
-        log.info('configuring %d metric(s): %s', len(conf), ', '.join(conf.keys()))
         for name, item in conf.items():
-            log.debug('configuring plugin: %s', name)
-            base = item['poller']
-            full = 'grapy.poller.%s' % base
-
-            if full not in sys.modules:
-                log.debug('importing module %s', full)
-                __import__(full)
-
             try:
+                log.debug('began plugin: %s', name)
+
+                base = item['poller']
+                full = 'grapy.poller.%s' % base
+
+                if full not in sys.modules:
+                    log.debug('importing poller %s', full)
+                    __import__(full)
+
                 args = {'plugin_name': name}
                 args.update(glbl.items() + item.items())
                 getattr(sys.modules[full], base)(args)
-                log.debug('ran plugin %s instance of %s', name, base)
+
+                log.debug('ended plugin %s instance of %s', name, base)
             except Exception as e:
                 grapy.log_exc(e, '%s: failed to run plugin' % name)
 
