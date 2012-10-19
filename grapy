@@ -61,8 +61,8 @@ def run_plugins(conf):
 
         log.info('configuring %d metric(s): %s', len(conf), ', '.join(conf.keys()))
         for name, item in conf.items():
-            base = item['module']
-            full = 'grapy.%s' % base
+            base = item['poller']
+            full = 'grapy.poller.%s' % base
 
             if full not in sys.modules:
                 __import__(full)
