@@ -3,7 +3,7 @@ import json
 import re
 import urllib2
 
-class http_api(grapy.plugin):
+class http(grapy.plugin):
     def collect(self):
         api_url = '{scheme}://{hostname}:{port}{path}'.format(**self.conf)
         if self.conf.get('auth_type') in ('basic', 'digest'):
