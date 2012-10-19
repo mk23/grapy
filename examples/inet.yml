@@ -1,6 +1,6 @@
 inet.tcp:
     period: 5
-    module: snmp_value
+    poller: snmp_value
 
     items:
         - label: "active_opens"
@@ -36,7 +36,7 @@ inet.tcp:
 
 inet.udp:
     period: 5
-    module: snmp_value
+    poller: snmp_value
 
     items:
         - label: "in_datagrams"

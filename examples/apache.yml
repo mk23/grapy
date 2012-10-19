@@ -1,6 +1,6 @@
 apache:
     period: 5
-    module: http_api
+    poller: http
     parser: regex
 
     scheme: http

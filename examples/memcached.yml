@@ -1,6 +1,6 @@
 memcached:
     period: 5
-    module: memcached_stats
+    poller: memcached_stats
 
     port:   11211
     skip:

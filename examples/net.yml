@@ -1,6 +1,6 @@
 net:
     period: 5
-    module: snmp_table
+    poller: snmp_table
 
     table:  .1.3.6.1.2.1.2.2.1
 

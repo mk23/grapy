@@ -1,6 +1,6 @@
 disk.iops:
     period: 5
-    module: snmp_table
+    poller: snmp_table
 
     table: .1.3.6.1.4.1.2021.13.15.1.1
 
@@ -27,7 +27,7 @@ disk.iops:
 
 disk.space:
     period: 5
-    module: snmp_table
+    poller: snmp_table
 
     table: .1.3.6.1.4.1.2021.9.1
 

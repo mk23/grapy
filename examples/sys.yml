@@ -1,6 +1,6 @@
 sys:
     period: 5
-    module: snmp_value
+    poller: snmp_value
 
     items:
         - label: "interrupts"

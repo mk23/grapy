@@ -1,6 +1,6 @@
 rabbitmq.node:
     period: 5
-    module: http_api
+    poller: http
     parser: json
 
     scheme:    http
@@ -18,7 +18,7 @@ rabbitmq.node:
 
 rabbitmq.exchanges:
     period: 5
-    module: http_api
+    poller: http
     parser: json
 
     scheme:    http
@@ -38,7 +38,7 @@ rabbitmq.exchanges:
 
 rabbitmq.queues:
     period: 5
-    module: http_api
+    poller: http
     parser: json
 
     scheme:    http
