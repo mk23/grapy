@@ -1,13 +1,14 @@
 apache:
     period: 5
     poller: http
+    poller_conf:
+        scheme: http
+        port:   80
+        path:   /server-status?auto
+
     parser: text
     parser_conf:
         value: '(?P<label>.*?): (?P<value>\d+)$'
-
-    scheme: http
-    port:   80
-    path:   /server-status?auto
 
     items:
         - label: 'kbytes'

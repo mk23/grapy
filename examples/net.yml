@@ -1,8 +1,8 @@
 net:
     period: 5
     poller: snmp_table
-
-    table:  .1.3.6.1.2.1.2.2.1
+    poller_conf:
+        table:  .1.3.6.1.2.1.2.2.1
 
     items:
         - labels: "2.in.bytes"

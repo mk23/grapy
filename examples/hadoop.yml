@@ -1,11 +1,12 @@
 hadoop.namenode:
     period: 5
     poller: http
-    parser: json
+    poller_conf:
+        scheme: http
+        port:   50070
+        path:   /jmx
 
-    scheme: http
-    port:   50070
-    path:   /jmx
+    parser: json
 
     items:
         - value: "/beans/**/name|java.lang%3Atype=(Memory):(.*MemoryUsage)/(used|max)"

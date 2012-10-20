@@ -1,11 +1,12 @@
 java:
     period: 5
     poller: http
-    parser: json
+    poller_conf:
+        scheme: http
+        port:   8080
+        path:   /jmxproxy/localhost:1123
 
-    scheme: http
-    port:   8080
-    path:   /jmxproxy/localhost:1123
+    parser: json
 
     items:
         - value: "/java.lang/java.lang%%3Atype=(ClassLoading)/((?%%3AUn)?[Ll]oadedClassCount)"

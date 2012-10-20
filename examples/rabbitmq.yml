@@ -1,15 +1,16 @@
 rabbitmq.node:
     period: 5
     poller: http
+    poller_conf:
+        scheme: http
+        port:   55672
+        path:   /api/nodes
+        auth:
+            type: basic
+            user: guest
+            pass: guest
+
     parser: json
-
-    scheme:    http
-    port:      55672
-    path:      /api/nodes
-
-    auth_type: basic
-    auth_user: guest
-    auth_pass: guest
 
     items:
         - value: "/**/mem_used"
@@ -19,15 +20,16 @@ rabbitmq.node:
 rabbitmq.exchanges:
     period: 5
     poller: http
+    poller_conf:
+        scheme: http
+        port:   55672
+        path:   /api/exchanges/%2f
+        auth:
+            type: basic
+            user: guest
+            pass: guest
+
     parser: json
-
-    scheme:    http
-    port:      55672
-    path:      /api/exchanges/%2f
-
-    auth_type: basic
-    auth_user: guest
-    auth_pass: guest
 
     items:
         - label: "{name}.messages_in"
@@ -39,15 +41,16 @@ rabbitmq.exchanges:
 rabbitmq.queues:
     period: 5
     poller: http
+    poller_conf:
+        scheme: http
+        port:   55672
+        path:   /api/queues
+        auth:
+            type: basic
+            user: guest
+            pass: guest
+
     parser: json
-
-    scheme:    http
-    port:      55672
-    path:      /api/queues
-
-    auth_type: basic
-    auth_user: guest
-    auth_pass: guest
 
     items:
         - value: "/**/name:(memory)"

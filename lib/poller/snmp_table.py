@@ -4,7 +4,7 @@ import re
 
 class snmp_table (grapy.plugin):
     def collect(self):
-        oid = netsnmp.VarList(netsnmp.Varbind(self.conf['table']))
+        oid = netsnmp.VarList(netsnmp.Varbind(self.conf['poller_conf']['table']))
         netsnmp.snmpwalk(oid, DestHost=self.conf['hostname'], Version=self.conf['snmp_version'], Community=self.conf['snmp_community'], UseNumeric=True)
 
         tbl = {}
