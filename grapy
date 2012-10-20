@@ -68,6 +68,9 @@ def run_plugins(conf):
         log.info('configured %d metric(s): %s', len(conf), ', '.join(conf.keys()))
 
         for name, item in conf.items():
+            if name in glbl['exclude_pollers']:
+                log.info('%s: skipping excluded poller', name)
+                continue
             try:
                 log.debug('began poller: %s', name)
 
@@ -110,6 +113,8 @@ if __name__ == '__main__':
                         help='graphite host key prefix')
     parser.add_argument('-f', '--config', default='/etc/grapy.yml',
                         help='grapy configuration file')
+    parser.add_argument('-e', '--exclude-pollers', default=[], nargs='+',
+                        help='exclude selected pollers')
     parser.add_argument('-l', '--logger',
                         help='log to file, console:, or syslog:<facility>')
     parser.add_argument('-d', '--debug', default=False, action='store_true', help=argparse.SUPPRESS)
