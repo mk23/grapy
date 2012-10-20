@@ -1,8 +1,17 @@
 memcached:
-    period: 5
-    poller: memcached_stats
+    period: 0
+    poller: tcp
+    poller_conf:
+        port: 11211
+        wait:
+        line: "\r\n"
+        send: "stats\r\n"
+        last: "END\r\n"
+        quit: "QUIT\r\n"
 
-    port:   11211
-    skip:
-        - connection_structures
-        - reserved_fds
+    parser: text
+    parser_conf:
+        value: 'STAT (?P<label>.+?) (?P<value>\d+)$'
+
+    items:
+        - value: '/.+'
