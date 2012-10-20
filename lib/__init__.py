@@ -36,7 +36,7 @@ class plugin:
         m = []
         t = int(time.time())
 
-        for k, v in self.data.items():
+        for k, v in sorted(self.data.items()):
             if self.conf.get('only_deltas'):
                 v = v - self.prev.get(k, 0)
             m.append('%s.%s.%s %s %d\r\n' % (self.conf['host_prefix'], self.conf['plugin_name'], k, v, t))
