@@ -121,8 +121,6 @@ class plugin:
         value = re.compile(self.conf['parser_conf']['value'])
         parts = [re.compile(item) for item in self.conf['parser_conf'].get('parts', [])]
 
-        print data
-
         items = {}
         stack = [items]
         for line in data:
