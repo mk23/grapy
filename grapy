@@ -52,10 +52,10 @@ def parse_conf(parser):
 
     return conf
 
-def load_module(path, name):
-    full = 'grapy.%s.%s' % (path, name)
+def load_module(name):
+    full = 'grapy.poller.%s' % (name)
     if full not in sys.modules:
-        log.debug('importing %s: %s', path, name)
+        log.debug('importing %s', name)
         __import__(full)
 
     return sys.modules[full]
@@ -74,10 +74,7 @@ def run_plugins(conf):
                 args = {'plugin_name': name}
                 args.update(glbl.items() + item.items())
 
-                poller = load_module('poller', item['poller'])
-                if 'parser' in item:
-                    args['parser'] = load_module('parser', item['parser'])
-
+                poller = load_module(item['poller'])
                 getattr(poller, item['poller'])(args)
 
                 log.debug('ended poller %s instance of %s', name, item['poller'])
