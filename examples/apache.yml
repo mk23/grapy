@@ -1,21 +1,23 @@
 apache:
     period: 5
     poller: http
-    parser: regex
+    parser: text
+    parser_conf:
+        value: '(?P<label>.*?): (?P<value>\d+)$'
 
     scheme: http
     port:   80
     path:   /server-status?auto
 
     items:
-        - label: "kbytes"
-          regex: "Total kBytes: (\\d+)"
+        - label: 'kbytes'
+          value: '/Total kBytes'
 
-        - label: "requests"
-          regex: "Total Accesses: (\\d+)"
+        - label: 'requests'
+          value: '/Total Accesses'
 
-        - label: "workers.busy"
-          regex: "BusyWorkers: (\\d+)"
+        - label: 'workers.busy'
+          value: '/BusyWorkers'
 
-        - label: "workers.idle"
-          regex: "IdleWorkers: (\\d+)"
+        - label: 'workers.idle'
+          value: '/IdleWorkers'
