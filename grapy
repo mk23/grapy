@@ -3,7 +3,6 @@
 import imp
 import glob
 import grapy
-import grapy.poller
 import logging
 import logging.handlers
 import socket
@@ -71,7 +70,7 @@ def run_plugins(conf):
                 args = {'plugin_name': name}
                 args.update(glbl.items() + item.items())
 
-                poller = imp.load_module(item['poller'], *(imp.find_module(item['poller'], grapy.poller.__path__)))
+                poller = imp.load_module(item['poller'], *(imp.find_module(item['poller'], grapy.__path__)))
                 getattr(poller, item['poller'])(args)
 
                 log.debug('ended poller %s instance of %s', name, item['poller'])
