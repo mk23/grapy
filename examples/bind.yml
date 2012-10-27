@@ -1,0 +1,20 @@
+bind:
+    period: 5
+    poller: file
+    poller_conf:
+        file: /var/cache/bind/named.stats
+
+    parser: text
+    parser_conf:
+        value: '\s+(?P<value>\d+) (?P<label>.*)'
+        parts:
+            - '\+\+ (.*) \+\+'
+            - '\[View: (.*)\]'
+
+    items:
+        - label: 'cache.{name}'
+          value: '/Cache DB RRsets/(\w+).*/(.+)'
+        - label: 'socket.{name}'
+          value: '/Socket I%2fO Statistics/(TCP|UDP)%2f(IPv[46]) (.+)'
+        - label: 'server.{name}'
+          value: '/Name Server Statistics/(.+)'
