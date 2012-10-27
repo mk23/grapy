@@ -13,9 +13,9 @@ rabbitmq.node:
     parser: json
 
     items:
-        - value: "/**/mem_used"
-        - value: "/**/proc_used"
-        - value: "/**/sockets_used"
+        - value: '/**/mem_used'
+        - value: '/**/proc_used'
+        - value: '/**/sockets_used'
 
 rabbitmq.exchanges:
     period: 5
@@ -32,11 +32,11 @@ rabbitmq.exchanges:
     parser: json
 
     items:
-        - label: "{name}.messages_in"
-          value: "/**/name:message_stats_in/publish"
+        - label: '{name}.messages_in'
+          value: '/**/name:message_stats_in/publish'
 
-        - label: "{name}.messages_out"
-          value: "/**/name:message_stats_out/publish"
+        - label: '{name}.messages_out'
+          value: '/**/name:message_stats_out/publish'
 
 rabbitmq.queues:
     period: 5
@@ -53,17 +53,17 @@ rabbitmq.queues:
     parser: json
 
     items:
-        - value: "/**/name:(memory)"
+        - value: '/**/name:(memory)'
 
-        - label: "{name}.messages_total"
-          value: "/**/name:messages"
+        - label: '{name}.messages_total'
+          value: '/**/name:messages'
 
-        - value: "/**/name:(messages_ready)"
+        - value: '/**/name:(messages_ready)'
 
-        - value: "/**/name:(messages_unack)nowledged"
+        - value: '/**/name:(messages_unack)nowledged'
 
-        - value: "/**/name:message_stats/(publish)"
+        - value: '/**/name:message_stats/(publish)'
 
-        - value: "/**/name:message_stats/(deliver_get)"
+        - value: '/**/name:message_stats/(deliver_get)'
 
-        - value: "/**/name:message_stats/(deliver_no_ack)"
+        - value: '/**/name:message_stats/(deliver_no_ack)'

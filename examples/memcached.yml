@@ -1,5 +1,5 @@
 memcached:
-    period: 0
+    period: 5
     poller: tcp
     poller_conf:
         port: 11211
