@@ -11,4 +11,4 @@ grapy_global:
     carbon_host: localhost
     carbon_port: 2004
 
-    logger: console:
+    logger_dest: console:

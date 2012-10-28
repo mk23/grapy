@@ -35,7 +35,7 @@ def create_log(logger=None, debug=False):
 def parse_conf(parser):
     try:
         args = parser.parse_args()
-        conf = yaml.load(open(args.config))
+        conf = yaml.load(open(args.config_file))
 
         parser.set_defaults(**(conf['grapy_global']))
 
@@ -104,18 +104,19 @@ if __name__ == '__main__':
                         help='destination carbon port')
     parser.add_argument('-x', '--host-prefix', default=socket.gethostname().split('.')[0],
                         help='graphite host key prefix')
-    parser.add_argument('-f', '--config', default='/etc/grapy.yml',
+    parser.add_argument('-f', '--config-file', default='/etc/grapy.yml',
                         help='grapy configuration file')
+    parser.add_argument('-l', '--logger-dest',
+                        help='log to file, console:, or syslog:<facility>')
     parser.add_argument('-e', '--exclude-pollers', default=[], nargs='+',
                         help='exclude selected pollers')
     parser.add_argument('-t', '--timeout', default=0, type=int,
-                        help='seconds to interrupt pollers')
-    parser.add_argument('-l', '--logger',
-                        help='log to file, console:, or syslog:<facility>')
-    parser.add_argument('-d', '--debug', default=False, action='store_true', help=argparse.SUPPRESS)
+                        help='poller interrupt time in seconds')
+    parser.add_argument('-v', '--verbose', default=False, action='store_true',
+                        help='enable verbose debug logs')
 
     cfg = parse_conf(parser)
-    log = create_log(cfg['grapy_global']['logger'], cfg['grapy_global']['debug'])
+    log = create_log(cfg['grapy_global']['logger_dest'], cfg['grapy_global']['verbose'])
     try:
         run_plugins(cfg)
     except SystemExit as e:
