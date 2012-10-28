@@ -4,6 +4,7 @@ import logging as log
 import os
 import pickle
 import re
+import signal
 import socket
 import sys
 import time
@@ -22,6 +23,8 @@ class plugin:
         threshold = time.time() - int(conf['period']) * 60
         run_limit = max(code_date, threshold)
 
+        signal.signal(signal.SIGALRM, self.timeout)
+
         log.debug('%s run limit: %s', conf['plugin_name'], datetime.datetime.fromtimestamp(run_limit))
         if not os.path.exists(data_file) or os.stat(data_file).st_mtime < run_limit:
             try:
@@ -29,11 +32,17 @@ class plugin:
             except:
                 self.prev = {}
 
+            signal.alarm(self.conf.get('timeout', 0))
             self.collect()
             self.publish()
+            signal.alarm(0)
+
             pickle.dump(self.data, open(data_file, 'w'))
         else:
             log.debug('%s: skipping run: recent change', data_file)
+
+    def timeout(self, *args):
+        raise Exception('poller timed out (%ds)' % self.conf['timeout'])
 
     def publish(self):
         m = []
