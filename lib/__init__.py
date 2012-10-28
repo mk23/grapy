@@ -39,7 +39,7 @@ class plugin:
 
             pickle.dump(self.data, open(data_file, 'w'))
         else:
-            log.debug('%s: skipping run: recent change', data_file)
+            log.info('%s: skipping run: recent change', data_file)
 
     def timeout(self, *args):
         raise Exception('poller timed out (%ds)' % self.conf['timeout'])

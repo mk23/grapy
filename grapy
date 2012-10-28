@@ -25,7 +25,7 @@ def create_log(logger=None, debug=False):
         log.setLevel(logging.DEBUG if debug else logging.INFO)
         log.addHandler(log_hdlr)
 
-        log.info('logging started')
+        log.debug('logging started')
     else:
         log.addHandler(logging.NullHandler())
 
@@ -65,7 +65,7 @@ def run_plugins(conf):
                 log.info('%s: skipping excluded poller', name)
                 continue
             try:
-                log.debug('began poller: %s', name)
+                log.info('began poller: %s', name)
 
                 args = {'plugin_name': name}
                 args.update(glbl.items() + item.items())
