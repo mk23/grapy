@@ -32,7 +32,7 @@ class plugin:
             except:
                 self.prev = {}
 
-            signal.alarm(self.conf.get('timeout', 0))
+            signal.alarm(self.conf['timeout'])
             self.collect()
             self.publish()
             signal.alarm(0)
