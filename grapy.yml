@@ -12,3 +12,6 @@ grapy_global:
     carbon_port: 2004
 
     logger_dest: console:
+
+    timeout:     10
+    verbose:     True
