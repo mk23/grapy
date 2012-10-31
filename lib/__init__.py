@@ -51,7 +51,12 @@ class plugin:
         for k, v in sorted(self.data.items()):
             if self.conf.get('only_deltas'):
                 v = v - self.prev.get(k, 0)
-            m.append('%s.%s.%s %s %d\r\n' % (self.conf['host_prefix'], self.conf['plugin_name'], k, v, t))
+
+            m.append('%s.%s.%s %s %d\r\n' % (
+                self.conf['host_prefix'].lower(),
+                self.conf['plugin_name'].lower(),
+                k, v, t
+            ))
 
         s = mk_sock(self.conf['carbon_host'], self.conf['carbon_port'])
         s.send(''.join(m))
