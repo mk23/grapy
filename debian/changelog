@@ -1,3 +1,17 @@
+grapy (20121103.001) precise; urgency=low
+
+  * Tagging 20121103.001
+  * [001] Add a debian release helper script.
+  * [002] Add example configs to the package.
+  * [003] Be a bit more leniant in text parsing by allowing substring
+    searches instead of forcing all regexes do begining of line matches.
+  * [004] Add a new cmd poller.
+  * [005] Add a mysql metrics example based on the new cmd poller.
+  * [006] Strip and reverse the git log before adding to debian
+    changelog.
+
+ -- Max Kalika <max@mklinbox>  Sat, 03 Nov 2012 12:03:19 -0700
+
 grapy (20121102.002) precise; urgency=low
 
   * Tagging 20121102.002
