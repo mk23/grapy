@@ -138,7 +138,7 @@ class plugin:
         items = {}
         stack = [items]
         for line in data:
-            match = value.match(line)
+            match = value.search(line)
             if match:
                 stack[-1][match.group('label')] = match.group('value')
                 continue
