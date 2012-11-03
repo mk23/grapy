@@ -17,7 +17,7 @@ if find:
         v_minor = '%03d' % (int(find.group(2)) + 1)
 
     print 'looking ...'
-    changes = subprocess.check_output(['git', 'log', '--oneline', '%s..HEAD' % find.group(0)]).split('\n')
+    changes = subprocess.check_output(['git', 'log', '--oneline', '%s..HEAD' % find.group(0)]).strip().split('\n')[::-1]
 
 print 'creating ...'
 subprocess.check_output(['dch', '--newversion', '%s.%s' % (v_major, v_minor), 'Tagging %s.%s' % (v_major, v_minor)])
