@@ -1,6 +1,6 @@
 #!/usr/bin/env python2.7
 
-import subprocess, sys
+import glob, subprocess, sys
 from distutils.core import setup
 
 def run_setup():
@@ -31,7 +31,8 @@ def run_setup():
         scripts=['grapy', 'ingest.py'],
         packages=['grapy'],
         package_dir={'grapy': 'lib'},
-        data_files=[('/etc/grapy', ['grapy.yml'])]
+        package_data={'grapy': ['examples/*']},
+        data_files=[('/etc/grapy', ['grapy.yml']), ('/etc/grapy/examples', glob.glob('examples/*.yml'))]
     )
 
 if __name__ == '__main__':
