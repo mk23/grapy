@@ -1,0 +1,22 @@
+mysql:
+    period: 0
+    poller: cmd
+    poller_conf:
+        line: "\n"
+        exec: '/usr/bin/mysqladmin --defaults-file=/etc/mysql/debian.cnf extended status'
+
+    parser: text
+    parser_conf:
+        value: '(?P<label>\w+)\s+\|\s+(?P<value>\d+)'
+
+    items:
+        - label: 'Server.{name}'
+          value: '/(Connections|Questions|Slow_queries|Created_\w+|Aborted_\w+|Bytes_\w+)'
+
+        - label: 'Commands.{name}'
+          value: '/Com_(\w+)'
+
+        - value: '/(Innodb)_(\w+)'
+        - value: '/(Qcache)_(\w+)'
+        - value: '/(Threads)_(\w+)'
+
