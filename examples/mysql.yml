@@ -1,5 +1,5 @@
 mysql:
-    period: 0
+    period: 5
     poller: cmd
     poller_conf:
         line: "\n"
