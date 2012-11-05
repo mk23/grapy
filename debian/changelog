@@ -1,3 +1,14 @@
+grapy (20121105.001) precise; urgency=low
+
+  * Tagging 20121105.001
+  * [001] Use a 5 minute interval in the examples.
+  * [002] Support text as well as pickle protocol in the ingester.
+  * [003] Clarify logging in the ingester.
+  * [004] Publish data all at once after pollers are done, skip
+    publishing empty results, add support for pickle protocol.
+
+ -- Max Kalika <max@mklinbox>  Mon, 05 Nov 2012 04:33:34 -0800
+
 grapy (20121103.001) precise; urgency=low
 
   * Tagging 20121103.001
