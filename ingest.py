@@ -17,11 +17,12 @@ def ingest_text(socket, remote):
     while True:
         line = reader.readline()
         if not line:
-            logger('disc: %s:%s', *remote)
             break
 
         reader.flush()
         logger('read: %r', line)
+
+    logger('disc: %s:%s', *remote)
 
 def ingest_pickle(socket, remote):
     logger('conn: %s:%s', *remote)
@@ -36,6 +37,7 @@ def ingest_pickle(socket, remote):
 
         break
 
+    logger('disc: %s:%s', *remote)
 
 
 if __name__ == '__main__':
@@ -48,7 +50,7 @@ if __name__ == '__main__':
                         help='protocol type')
     args = parser.parse_args()
 
-    logger('starting ingestion server on port 2004')
+    logger('starting %s ingestion server on port %d', args.type, args.port)
     server = StreamServer(('0.0.0.0', args.port), getattr(sys.modules[__name__], 'ingest_%s' % args.type))
     try:
         server.serve_forever()
