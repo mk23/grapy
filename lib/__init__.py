@@ -6,6 +6,7 @@ import pickle
 import re
 import signal
 import socket
+import struct
 import sys
 import time
 import traceback
@@ -34,32 +35,15 @@ class plugin:
 
             signal.alarm(self.conf['timeout'])
             self.collect()
-            self.publish()
             signal.alarm(0)
 
+            prepare(dict(('%s.%s.%s' % (conf['host_prefix'], conf['plugin_name'], k), v) for k, v in self.data.items()))
             pickle.dump(self.data, open(data_file, 'w'))
         else:
             log.info('%s: skipping run: recent change', data_file)
 
     def timeout(self, *args):
         raise Exception('poller timed out (%ds)' % self.conf['timeout'])
-
-    def publish(self):
-        m = []
-        t = int(time.time())
-
-        for k, v in sorted(self.data.items()):
-            if self.conf.get('only_deltas'):
-                v = v - self.prev.get(k, 0)
-
-            m.append('%s.%s.%s %s %d\r\n' % (
-                self.conf['host_prefix'].lower(),
-                self.conf['plugin_name'].lower(),
-                k, v, t
-            ))
-
-        s = mk_sock(self.conf['carbon_host'], self.conf['carbon_port'])
-        s.send(''.join(m))
 
     def escape(self, label):
         quote = lambda t: t.replace('.', '$').replace('/', '^').replace(' ', '_')
@@ -167,16 +151,27 @@ class plugin:
 
         return items
 
+def prepare(data=None, test=False, cache={}):
+    if type(data) == dict:
+        cache.update(data)
+    return cache if not test else len(cache) > 0
 
-def mk_sock(host, port=2004, cache={}):
-    sock = socket.socket()
-    name = '%s:%d' % (host, port)
+def publish(host, port, proto='text'):
+    if not prepare(test=True):
+        log.info('skipping empty publish')
+        return
 
-    if name not in cache:
-        sock.connect((host, port))
-        cache[name] = sock
+    t = int(time.time())
+    s = socket.socket()
 
-    return cache[name]
+    if proto == 'text':
+        m = ''.join('%s %s %d\n' % (k, v, t) for k, v in sorted(prepare().items()))
+    elif proto == 'pickle':
+        p = pickle.dumps([(k, (t, v)) for k, v in sorted(prepare().items())])
+        m = struct.pack('!L', len(p)) + p
+
+    s.connect((host, port))
+    s.send(m)
 
 def log_exc(e, msg=None):
     if msg:

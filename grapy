@@ -77,6 +77,7 @@ def run_plugins(conf):
             except Exception as e:
                 grapy.log_exc(e, '%s: failed to run plugin' % name)
 
+        grapy.publish(glbl['carbon_host'], glbl['carbon_port'], glbl['carbon_type'])
     except Exception as e:
         grapy.log_exc(e, 'collection failed')
         sys.exit(1)
@@ -100,8 +101,10 @@ if __name__ == '__main__':
                         help='location for state files')
     parser.add_argument('-c', '--carbon-host', default='localhost',
                         help='destination carbon host')
-    parser.add_argument('-p', '--carbon-port', default=2004, type=int,
+    parser.add_argument('-p', '--carbon-port', default=2003, type=int,
                         help='destination carbon port')
+    parser.add_argument('-r', '--carbon-type', default='text', choices=['text', 'pickle'],
+                        help='destination carbon type')
     parser.add_argument('-x', '--host-prefix', default=socket.gethostname().split('.')[0],
                         help='graphite host key prefix')
     parser.add_argument('-f', '--config-file', default='/etc/grapy.yml',
