@@ -53,7 +53,7 @@ def parse_conf(parser):
 
     return conf
 
-def run_plugins(conf):
+def run_pollers(conf):
     log.info('collection started')
 
     try:
@@ -75,7 +75,7 @@ def run_plugins(conf):
 
                 log.debug('ended poller %s instance of %s', name, item['poller'])
             except Exception as e:
-                grapy.log_exc(e, '%s: failed to run plugin' % name)
+                grapy.log_exc(e, '%s: failed to run poller' % name)
 
         grapy.publish(glbl['carbon_host'], glbl['carbon_port'], glbl['carbon_type'])
     except Exception as e:
@@ -121,7 +121,7 @@ if __name__ == '__main__':
     cfg = parse_conf(parser)
     log = create_log(cfg['grapy_global']['logger_dest'], cfg['grapy_global']['verbose'])
     try:
-        run_plugins(cfg)
+        run_pollers(cfg)
     except SystemExit as e:
         log.info('grapy exiting: %s', e)
 
