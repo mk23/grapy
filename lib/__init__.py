@@ -17,7 +17,7 @@ class plugin:
         self.conf = conf
         self.data = {}
 
-        data_file = '%s/%s.dat' % (conf['persist_dir'], conf['plugin_name'])
+        data_file = '%s/%s.dat' % (conf['persist_dir'], conf['poller_name'])
         log.debug('loading timestamp from %s', data_file)
 
         code_date = os.stat(sys.modules[self.__class__.__module__].__file__).st_mtime
@@ -26,7 +26,7 @@ class plugin:
 
         signal.signal(signal.SIGALRM, self.timeout)
 
-        log.debug('%s run limit: %s', conf['plugin_name'], datetime.datetime.fromtimestamp(run_limit))
+        log.debug('%s run limit: %s', conf['poller_name'], datetime.datetime.fromtimestamp(run_limit))
         if not os.path.exists(data_file) or os.stat(data_file).st_mtime < run_limit:
             try:
                 self.prev = pickle.load(open(data_file))
@@ -37,7 +37,7 @@ class plugin:
             self.collect()
             signal.alarm(0)
 
-            prepare(dict(('%s.%s.%s' % (conf['host_prefix'], conf['plugin_name'], k), v) for k, v in self.data.items()))
+            prepare(dict(('%s.%s.%s' % (conf['host_prefix'], conf['poller_name'], k), v) for k, v in self.data.items()))
             pickle.dump(self.data, open(data_file, 'w'))
         else:
             log.info('%s: skipping run: recent change', data_file)

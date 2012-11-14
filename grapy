@@ -67,7 +67,7 @@ def run_pollers(conf):
             try:
                 log.info('began poller: %s', name)
 
-                args = {'plugin_name': name}
+                args = {'poller_name': name}
                 args.update(glbl.items() + item.items())
 
                 poller = imp.load_module(item['poller'], *(imp.find_module(item['poller'], grapy.__path__)))
