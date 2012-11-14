@@ -47,7 +47,7 @@ def parse_conf(parser):
     if conf['grapy_global']['include_dir']:
         for item in glob.glob('%s/*.yml' % conf['grapy_global']['include_dir']):
             try:
-                conf = dict(conf.items() + yaml.load(open(item)).items())
+                conf.update(yaml.load(open(item)))
             except (IOError, yaml.parser.ParserError, yaml.scanner.ScannerError) as e:
                 parser.error('cannot parse configuration file: %s' % e)
 
