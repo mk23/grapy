@@ -1,7 +1,7 @@
 import grapy
 import urllib2
 
-class http(grapy.plugin):
+class http(grapy.poller):
     def collect(self):
         cfg = self.conf['poller_conf']
         url = '{scheme}://{hostname}:{port}{path}'.format(hostname=self.conf['hostname'], **cfg)

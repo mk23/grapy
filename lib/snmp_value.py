@@ -1,7 +1,7 @@
 import grapy
 import netsnmp
 
-class snmp_value(grapy.plugin):
+class snmp_value(grapy.poller):
     def collect(self):
         for obj in self.conf['items']:
             oid = netsnmp.Varbind(obj['value'])

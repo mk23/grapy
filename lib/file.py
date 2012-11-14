@@ -1,5 +1,5 @@
 import grapy
 
-class file(grapy.plugin):
+class file(grapy.poller):
     def collect(self):
         self.parser(open(self.conf['poller_conf']['file']))

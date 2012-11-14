@@ -2,7 +2,7 @@ import grapy
 import shlex
 import subprocess
 
-class cmd(grapy.plugin):
+class cmd(grapy.poller):
     def collect(self):
         conf = self.conf['poller_conf']
 

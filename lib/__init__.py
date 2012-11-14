@@ -12,7 +12,7 @@ import time
 import traceback
 import urllib2
 
-class plugin:
+class poller:
     def __init__(self, conf):
         self.conf = conf
         self.data = {}
